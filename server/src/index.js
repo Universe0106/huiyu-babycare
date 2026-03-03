@@ -16,6 +16,7 @@ app.use('/api/chat', routes.chatRouter)
 app.use('/api/consult', routes.consultRouter)
 app.use('/api/growth', routes.growthRouter)
 app.use('/api/knowledge', routes.knowledgeRouter)
+app.use('/api/baby', routes.babyRouter)
 
 // 健康检查
 app.get('/health', (req, res) => {

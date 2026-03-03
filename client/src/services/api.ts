@@ -87,3 +87,78 @@ export async function getKnowledgeList(category: string) {
   })
   return response.data
 }
+
+// ==================== 宝宝管理 API ====================
+
+/**
+ * 获取宝宝列表
+ */
+export async function getBabyList() {
+  const response = await Taro.request({
+    url: `${BASE_URL}/api/baby`,
+    method: 'GET'
+  })
+  return response.data
+}
+
+/**
+ * 获取宝宝详情
+ */
+export async function getBabyDetail(babyId: string) {
+  const response = await Taro.request({
+    url: `${BASE_URL}/api/baby/${babyId}`,
+    method: 'GET'
+  })
+  return response.data
+}
+
+/**
+ * 添加宝宝
+ */
+export async function addBaby(data: {
+  name: string
+  gender: 'male' | 'female'
+  birthDate: string
+  avatar?: string
+}) {
+  const response = await Taro.request({
+    url: `${BASE_URL}/api/baby`,
+    method: 'POST',
+    header: {
+      'Content-Type': 'application/json'
+    },
+    data
+  })
+  return response.data
+}
+
+/**
+ * 更新宝宝信息
+ */
+export async function updateBaby(babyId: string, data: {
+  name?: string
+  gender?: 'male' | 'female'
+  birthDate?: string
+  avatar?: string
+}) {
+  const response = await Taro.request({
+    url: `${BASE_URL}/api/baby/${babyId}`,
+    method: 'PUT',
+    header: {
+      'Content-Type': 'application/json'
+    },
+    data
+  })
+  return response.data
+}
+
+/**
+ * 删除宝宝
+ */
+export async function deleteBaby(babyId: string) {
+  const response = await Taro.request({
+    url: `${BASE_URL}/api/baby/${babyId}`,
+    method: 'DELETE'
+  })
+  return response.data
+}
