@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { View, Text, Image, Input, ScrollView } from '@tarojs/components'
-import { sendChatMessage } from '../../services'
-import { Message } from '../../types'
+import { chatApi } from '@/services'
+import type { Message } from '@/types'
 import './index.scss'
 
 export default function Consult() {
@@ -29,7 +29,7 @@ export default function Consult() {
     }, 100)
   }, [messages])
 
-  const handleSend = async () => {
+  const sendMessage = async () => {
     if (!inputText.trim() || isLoading) return
 
     const userMessage: Message = {
@@ -43,20 +43,18 @@ export default function Consult() {
     setIsLoading(true)
 
     try {
-      const result = await sendChatMessage({
-        message: userMessage.content,
-        history: messages
-      })
+      const response = await chatApi.sendMessage(userMessage.content, messages)
 
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'ai',
-        content: result.answer
+        content: response.answer
       }
 
       setMessages(prev => [...prev, aiMessage])
     } catch (error) {
       console.error('Chat error:', error)
+      // 可以显示错误提示
     } finally {
       setIsLoading(false)
     }
@@ -64,7 +62,7 @@ export default function Consult() {
 
   const handleSuggestionClick = (suggestion: string) => {
     setInputText(suggestion)
-    setTimeout(() => handleSend(), 100)
+    setTimeout(() => sendMessage(), 100)
   }
 
   return (
@@ -81,6 +79,7 @@ export default function Consult() {
             </View>
           </View>
         </View>
+        <Image className="info-icon" src="https://img.icons8.com/ios-glyphs/60/9CA3AF/info--v1.png" />
       </View>
 
       <ScrollView scrollY className="chat-scroll-area">
@@ -135,20 +134,22 @@ export default function Consult() {
       {/* Input Area */}
       <View className="input-area-wrapper">
         <View className="input-box">
+          <Image className="icon-btn" src="https://img.icons8.com/ios-glyphs/60/9CA3AF/plus-math.png" />
           <Input 
             className="chat-input" 
             placeholder="输入消息..." 
             value={inputText}
             onInput={(e) => setInputText(e.detail.value)}
-            onConfirm={handleSend}
+            onConfirm={sendMessage}
             confirmType="send"
             disabled={isLoading}
           />
+          <Image className="icon-btn" src="https://img.icons8.com/ios-glyphs/60/9CA3AF/microphone.png" />
           <View 
             className={`send-btn ${inputText.trim() ? 'active' : ''}`}
-            onClick={handleSend}
+            onClick={sendMessage}
           >
-            <Text className="send-icon">➤</Text>
+            <Image className="send-icon" src="https://img.icons8.com/ios-filled/50/ffffff/paper-plane.png" />
           </View>
         </View>
       </View>
