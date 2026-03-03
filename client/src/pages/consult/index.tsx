@@ -1,15 +1,88 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { View, Text, Image, Input, ScrollView } from '@tarojs/components'
+import Taro from '@tarojs/taro'
 import './index.scss'
+
+interface Message {
+  id: string
+  role: 'user' | 'ai'
+  content: string
+}
 
 export default function Consult() {
   const [inputText, setInputText] = useState('')
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: '1',
+      role: 'ai',
+      content: '你好！我是BabyPal，你的AI育儿助手。今天你想了解什么？'
+    }
+  ])
+  const [isLoading, setIsLoading] = useState(false)
+  const scrollRef = useRef<ScrollView>(null)
 
   const suggestions = [
     '睡眠训练技巧',
     '如何开始添加辅食',
     '什么时候该看儿科医生？'
   ]
+
+  // 自动滚动到底部
+  useEffect(() => {
+    setTimeout(() => {
+      scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }, 100)
+  }, [messages])
+
+  const sendMessage = async () => {
+    if (!inputText.trim() || isLoading) return
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      role: 'user',
+      content: inputText.trim()
+    }
+
+    setMessages(prev => [...prev, userMessage])
+    setInputText('')
+    setIsLoading(true)
+
+    try {
+      // 调用后端 API
+      const response = await Taro.request({
+        url: 'http://localhost:3000/api/chat',
+        method: 'POST',
+        header: {
+          'Content-Type': 'application/json'
+        },
+        data: {
+          message: userMessage.content,
+          history: messages
+        }
+      })
+
+      const aiMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: 'ai',
+        content: response.data.answer
+      }
+
+      setMessages(prev => [...prev, aiMessage])
+    } catch (error) {
+      console.error('Chat error:', error)
+      Taro.showToast({
+        title: '服务暂时不可用',
+        icon: 'none'
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setInputText(suggestion)
+    setTimeout(() => sendMessage(), 100)
+  }
 
   return (
     <View className="page-container chat-page">
@@ -29,45 +102,47 @@ export default function Consult() {
       </View>
 
       <ScrollView scrollY className="chat-scroll-area">
-        {/* Welcome Section */}
-        <View className="welcome-section">
-          <Image className="sparkle-icon" src="https://img.icons8.com/ios-filled/50/FFB8A1/sparkling.png" />
-          <Text className="welcome-title">今天我能帮您什么？</Text>
-          <Text className="welcome-desc">可以问我关于喂养、睡眠或宝宝里程碑的任何问题。</Text>
-        </View>
-
         {/* Chat Messages */}
         <View className="chat-messages">
-          {/* AI Message 1 */}
-          <View className="message-row ai-message">
-            <Image className="msg-avatar" src="https://img.icons8.com/color/96/bot.png" />
-            <View className="msg-bubble">
-              <Text className="msg-text">你好！我是BabyPal，你的AI育儿助手。今天你想了解什么？</Text>
+          {messages.map((msg) => (
+            msg.role === 'ai' ? (
+              <View key={msg.id} className="message-row ai-message">
+                <Image className="msg-avatar" src="https://img.icons8.com/color/96/bot.png" />
+                <View className="msg-bubble">
+                  <Text className="msg-text">{msg.content}</Text>
+                </View>
+              </View>
+            ) : (
+              <View key={msg.id} className="message-row user-message">
+                <View className="msg-bubble">
+                  <Text className="msg-text">{msg.content}</Text>
+                </View>
+              </View>
+            )
+          ))}
+          
+          {isLoading && (
+            <View className="message-row ai-message">
+              <Image className="msg-avatar" src="https://img.icons8.com/color/96/bot.png" />
+              <View className="msg-bubble loading">
+                <Text className="msg-text">正在思考中...</Text>
+              </View>
             </View>
-          </View>
-
-          {/* User Message */}
-          <View className="message-row user-message">
-            <View className="msg-bubble">
-              <Text className="msg-text">3个月大的宝宝应该多久喂一次？</Text>
-            </View>
-          </View>
-
-          {/* AI Message 2 */}
-          <View className="message-row ai-message">
-            <Image className="msg-avatar" src="https://img.icons8.com/color/96/bot.png" />
-            <View className="msg-bubble">
-              <Text className="msg-text">在3个月大的时候，大多数宝宝在24小时内大约吃6到8次。这通常意味着每3到4小时喂一次。但是，始终遵循宝宝的饥饿信号！</Text>
-            </View>
-          </View>
+          )}
+          
+          <View ref={scrollRef} />
         </View>
 
         {/* Suggestions */}
         <View className="suggestions-section">
-          <Text className="suggestions-title">示例问题</Text>
+          <Text className="suggestions-title">试试这样问</Text>
           <View className="suggestions-list">
             {suggestions.map((item, index) => (
-              <View key={index} className="suggestion-chip">
+              <View 
+                key={index} 
+                className="suggestion-chip"
+                onClick={() => handleSuggestionClick(item)}
+              >
                 <Text className="chip-text">{item}</Text>
               </View>
             ))}
@@ -84,9 +159,15 @@ export default function Consult() {
             placeholder="输入消息..." 
             value={inputText}
             onInput={(e) => setInputText(e.detail.value)}
+            onConfirm={sendMessage}
+            confirmType="send"
+            disabled={isLoading}
           />
           <Image className="icon-btn" src="https://img.icons8.com/ios-glyphs/60/9CA3AF/microphone.png" />
-          <View className="send-btn">
+          <View 
+            className={`send-btn ${inputText.trim() ? 'active' : ''}`}
+            onClick={sendMessage}
+          >
             <Image className="send-icon" src="https://img.icons8.com/ios-filled/50/ffffff/paper-plane.png" />
           </View>
         </View>
