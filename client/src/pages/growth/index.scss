@@ -1,0 +1,263 @@
+.page-container {
+  min-height: 100vh;
+  background: #FAFAFA;
+  padding: 40px 24px 100px; /* extra padding for bottom */
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  position: relative;
+}
+
+/* Header */
+.growth-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+
+  .header-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1F2937;
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: #9CA3AF;
+  }
+
+  .baby-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    background: #FFF0EB;
+    border: 2px solid #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  }
+}
+
+/* Metrics Row */
+.metrics-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.metric-card {
+  flex: 1;
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px 12px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+  border: 1px solid transparent;
+
+  &.active-metric {
+    background: #FFF5F1;
+    border-color: #FFE4DD;
+    box-shadow: 0 8px 20px rgba(255, 143, 115, 0.1);
+  }
+
+  .metric-icon-wrapper {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 12px;
+    
+    .metric-icon {
+      width: 100%;
+      height: 100%;
+      opacity: 0.8;
+    }
+  }
+
+  .metric-label {
+    font-size: 12px;
+    color: #9CA3AF;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .metric-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1F2937;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: baseline;
+
+    .unit {
+      font-size: 12px;
+      font-weight: normal;
+      color: #6B7280;
+      margin-left: 2px;
+    }
+  }
+
+  .metric-diff {
+    font-size: 11px;
+    color: #10B981; /* Green for positive */
+    background: rgba(16, 185, 129, 0.1);
+    padding: 2px 6px;
+    border-radius: 10px;
+    align-self: flex-start;
+  }
+}
+
+/* Tabs */
+.tabs-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+  background: #F3F4F6;
+  padding: 4px;
+  border-radius: 30px;
+}
+
+.tab-btn {
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
+  border-radius: 26px;
+
+  .tab-text {
+    font-size: 14px;
+    color: #6B7280;
+    font-weight: 500;
+  }
+
+  &.tab-active {
+    background: #FF8F73;
+    box-shadow: 0 4px 12px rgba(255, 143, 115, 0.3);
+
+    .tab-text {
+      color: #fff;
+    }
+  }
+}
+
+/* Chart Section */
+.chart-section {
+  background: #fff;
+  border-radius: 24px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+  }
+
+  .chart-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1F2937;
+    max-width: 60%;
+  }
+
+  .chart-legend {
+    display: flex;
+    align-items: center;
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      background: #FF8F73;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+
+    .legend-text {
+      font-size: 12px;
+      color: #9CA3AF;
+    }
+  }
+
+  .chart-placeholder {
+    width: 100%;
+    height: 160px;
+    background: #F9FAFB;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 16px;
+
+    .chart-image {
+      width: 100%;
+      height: 100%;
+      opacity: 0.5;
+      mix-blend-mode: multiply;
+    }
+  }
+
+  .chart-x-axis {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px;
+
+    Text {
+      font-size: 12px;
+      color: #9CA3AF;
+    }
+  }
+}
+
+/* Growth Trend */
+.trend-section {
+  background: #FFF5F1;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 20px;
+
+  .trend-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .trend-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+  }
+
+  .trend-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1F2937;
+  }
+
+  .trend-text {
+    font-size: 14px;
+    color: #6B7280;
+    line-height: 1.5;
+  }
+}
+
+/* FAB */
+.fab-btn {
+  position: fixed;
+  bottom: 100px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 28px;
+  background: #FF8F73;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(255, 143, 115, 0.4);
+  z-index: 100;
+
+  .fab-icon {
+    width: 24px;
+    height: 24px;
+  }
+}

@@ -1,0 +1,276 @@
+.page-container {
+  min-height: 100vh;
+  background: #FAFAFA;
+  padding: 40px 24px 24px;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  .header-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1F2937;
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: #9CA3AF;
+  }
+
+  .bell-icon-wrapper {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #FFE4DD;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .bell-icon {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+/* Baby Card */
+.baby-card {
+  background: #FFF5F1;
+  border-radius: 20px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+  
+  .baby-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    margin-right: 16px;
+    background: #fff;
+  }
+
+  .baby-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .baby-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1F2937;
+    margin-bottom: 4px;
+  }
+
+  .baby-age {
+    font-size: 12px;
+    color: #9CA3AF;
+  }
+}
+
+/* Section Common */
+.section {
+  margin-bottom: 32px;
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1F2937;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .see-all {
+    font-size: 14px;
+    color: #FF8F73;
+    font-weight: 500;
+  }
+}
+
+/* Tasks */
+.tasks-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.task-card {
+  flex: 1;
+  border-radius: 20px;
+  padding: 20px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  
+  .task-icon-wrapper {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    
+    .task-icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .task-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1F2937;
+    margin-bottom: 4px;
+  }
+
+  .task-time {
+    font-size: 12px;
+    color: #9CA3AF;
+    text-transform: uppercase;
+  }
+}
+
+.task-feeding {
+  background: #FFF5EA;
+  .task-name { color: #D98539; }
+  .task-time { color: #E8AA6E; }
+}
+
+.task-diaper {
+  background: #F0F8FF;
+  .task-name { color: #5B88D9; }
+  .task-time { color: #8BAEE8; }
+}
+
+.task-sleep {
+  background: #F5F3FF;
+  .task-name { color: #7B61FF; }
+  .task-time { color: #A797FF; }
+}
+
+/* Recent Records */
+.recent-record-card {
+  background: linear-gradient(135deg, #FFA98F 0%, #FF8F73 100%);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 8px 20px rgba(255, 143, 115, 0.2);
+
+  .record-left {
+    display: flex;
+    align-items: center;
+  }
+
+  .record-icon-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+
+    .record-icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .record-info, .record-right {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .record-right {
+    align-items: flex-end;
+  }
+
+  .record-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+
+  .record-time, .record-amount {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+  }
+}
+
+/* Parenting Tips */
+.tips-scroll {
+  width: 100%;
+  white-space: nowrap;
+}
+
+.tips-row {
+  display: inline-flex;
+  gap: 16px;
+  padding-bottom: 8px;
+}
+
+.tip-card {
+  width: 220px;
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  display: inline-block;
+  white-space: normal;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+
+  .tip-image {
+    width: 100%;
+    height: 120px;
+    background: #E5E7EB;
+  }
+
+  .tip-content {
+    padding: 16px;
+  }
+
+  .tip-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1F2937;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .tip-desc {
+    font-size: 13px;
+    color: #6B7280;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}

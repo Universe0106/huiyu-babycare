@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+client/dist/
+server/dist/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Taro
+client/node_modules/.taro/
+client/.swc/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.local
+.env.*.local
