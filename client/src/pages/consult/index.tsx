@@ -1,13 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { View, Text, Image, Input, ScrollView } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import { sendChatMessage } from '../../services'
+import { Message } from '../../types'
 import './index.scss'
-
-interface Message {
-  id: string
-  role: 'user' | 'ai'
-  content: string
-}
 
 export default function Consult() {
   const [inputText, setInputText] = useState('')
@@ -34,7 +29,7 @@ export default function Consult() {
     }, 100)
   }, [messages])
 
-  const sendMessage = async () => {
+  const handleSend = async () => {
     if (!inputText.trim() || isLoading) return
 
     const userMessage: Message = {
@@ -48,32 +43,20 @@ export default function Consult() {
     setIsLoading(true)
 
     try {
-      // 调用后端 API
-      const response = await Taro.request({
-        url: 'http://localhost:3000/api/chat',
-        method: 'POST',
-        header: {
-          'Content-Type': 'application/json'
-        },
-        data: {
-          message: userMessage.content,
-          history: messages
-        }
+      const result = await sendChatMessage({
+        message: userMessage.content,
+        history: messages
       })
 
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'ai',
-        content: response.data.answer
+        content: result.answer
       }
 
       setMessages(prev => [...prev, aiMessage])
     } catch (error) {
       console.error('Chat error:', error)
-      Taro.showToast({
-        title: '服务暂时不可用',
-        icon: 'none'
-      })
     } finally {
       setIsLoading(false)
     }
@@ -81,7 +64,7 @@ export default function Consult() {
 
   const handleSuggestionClick = (suggestion: string) => {
     setInputText(suggestion)
-    setTimeout(() => sendMessage(), 100)
+    setTimeout(() => handleSend(), 100)
   }
 
   return (
@@ -98,7 +81,6 @@ export default function Consult() {
             </View>
           </View>
         </View>
-        <Image className="info-icon" src="https://img.icons8.com/ios-glyphs/60/9CA3AF/info--v1.png" />
       </View>
 
       <ScrollView scrollY className="chat-scroll-area">
@@ -153,22 +135,20 @@ export default function Consult() {
       {/* Input Area */}
       <View className="input-area-wrapper">
         <View className="input-box">
-          <Image className="icon-btn" src="https://img.icons8.com/ios-glyphs/60/9CA3AF/plus-math.png" />
           <Input 
             className="chat-input" 
             placeholder="输入消息..." 
             value={inputText}
             onInput={(e) => setInputText(e.detail.value)}
-            onConfirm={sendMessage}
+            onConfirm={handleSend}
             confirmType="send"
             disabled={isLoading}
           />
-          <Image className="icon-btn" src="https://img.icons8.com/ios-glyphs/60/9CA3AF/microphone.png" />
           <View 
             className={`send-btn ${inputText.trim() ? 'active' : ''}`}
-            onClick={sendMessage}
+            onClick={handleSend}
           >
-            <Image className="send-icon" src="https://img.icons8.com/ios-filled/50/ffffff/paper-plane.png" />
+            <Text className="send-icon">➤</Text>
           </View>
         </View>
       </View>
